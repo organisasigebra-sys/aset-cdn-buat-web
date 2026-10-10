@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AD/ART Gerakan Berani Nusantara (GBRAN)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#8B0000',
+                            redlight: '#A52A2A',
+                            gold: '#D4AF37',
+                            dark: '#1A1A1A',
+                            gray: '#F8F9FA'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .sidebar-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white;
+                color: black;
+            }
+            .print-container {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased selection:bg-brand-gold selection:text-white">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-brand-red flex items-center justify-center text-brand-gold font-bold text-xl shadow-md border border-brand-gold">
+                        G
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-gray-900 text-base md:text-lg leading-tight">GBRAN</h1>
+                        <p class="text-xs text-gray-500 font-medium hidden sm:block">Gerakan Berani Nusantara</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Quick Tools -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" id="searchInput" placeholder="Cari pasal / kata kunci..." 
+                            class="pl-9 pr-4 py-1.5 bg-gray-100 text-sm border border-transparent rounded-full focus:outline-none focus:border-brand-red focus:bg-white transition duration-200 w-64">
+                    </div>
+                    <button onclick="window.print()" class="flex items-center space-x-1 px-3 py-1.5 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition">
+                        <i class="fas fa-print"></i>
+                        <span>Cetak</span>
+                    </button>
+                    <a href="#ad-section" class="px-3 py-1.5 text-xs font-bold text-white bg-brand-red hover:bg-red-900 rounded-lg shadow-sm transition">
+                        Anggaran Dasar
+                    </a>
+                    <a href="#art-section" class="px-3 py-1.5 text-xs font-bold text-brand-red border border-brand-red hover:bg-red-50 rounded-lg transition">
+                        Anggaran Rumah Tangga
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex md:hidden items-center space-x-2">
+                    <button id="mobileMenuBtn" class="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar (Below Header) -->
+        <div class="p-2 border-t border-gray-100 md:hidden bg-gray-50">
+            <div class="relative">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+                <input type="text" id="mobileSearchInput" placeholder="Cari di AD/ART..." 
+                    class="w-full pl-9 pr-4 py-2 bg-white text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-brand-red">
+            </div>
+        </div>
+    </header>
+
+    <!-- Drawer Navigation for Mobile -->
+    <div id="mobileDrawer" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden transition-opacity duration-300 no-print">
+        <div class="fixed inset-y-0 left-0 max-w-xs w-full bg-white shadow-xl flex flex-col justify-between">
+            <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-brand-red text-white">
+                <div class="flex items-center space-x-2">
+                    <span class="font-bold text-brand-gold">GBRAN</span>
+                    <span class="text-xs">Daftar Isi</span>
+                </div>
+                <button id="closeDrawerBtn" class="text-white hover:text-brand-gold">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-4 overflow-y-auto sidebar-scroll flex-grow text-sm">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Dokumen Utama</p>
+                <ul class="space-y-2 mb-6">
+                    <li><a href="#sk-section" class="drawer-link block py-1.5 px-2 rounded hover:bg-gray-100 font-medium text-gray-700">Surat Keputusan</a></li>
+                    <li><a href="#pengurus-section" class="drawer-link block py-1.5 px-2 rounded hover:bg-gray-100 font-medium text-gray-700">Struktur Pengurus</a></li>
+                    <li><a href="#pembukaan-section" class="drawer-link block py-1.5 px-2 rounded hover:bg-gray-100 font-medium text-gray-700">Pembukaan</a></li>
+                </ul>
+
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Anggaran Dasar (AD)</p>
+                <ul class="space-y-1 mb-6 text-gray-600">
+                    <li><a href="#ad-bab1" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB I Nama & Kedudukan</a></li>
+                    <li><a href="#ad-bab2" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB II Asas & Tujuan</a></li>
+                    <li><a href="#ad-bab3" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB III Status & Sifat</a></li>
+                    <li><a href="#ad-bab4" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB IV Pokok Perjuangan</a></li>
+                    <li><a href="#ad-bab5" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB V Lambang & Atribut</a></li>
+                    <li><a href="#ad-bab6" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB VI Keanggotaan</a></li>
+                    <li><a href="#ad-bab8" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB VIII Musyawarah/Rapat</a></li>
+                    <li><a href="#ad-bab10" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB X Susunan Dewan</a></li>
+                    <li><a href="#ad-bab12" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB XII Keuangan</a></li>
+                </ul>
+
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Anggaran Rumah Tangga (ART)</p>
+                <ul class="space-y-1 text-gray-600">
+                    <li><a href="#art-bab1" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB I Lambang & Ikrar</a></li>
+                    <li><a href="#art-bab2" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB II Keanggotaan</a></li>
+                    <li><a href="#art-bab4" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB IV Hak & Kewajiban</a></li>
+                    <li><a href="#art-bab8" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB VIII Kongres & Musyawarah</a></li>
+                    <li><a href="#art-bab10" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB X Kriteria Pengurus</a></li>
+                    <li><a href="#art-bab13" class="drawer-link block py-1 px-2 rounded hover:bg-gray-100">BAB XIII Wewenang & Tugas</a></li>
+                </ul>
+            </div>
+            <div class="p-4 border-t border-gray-200 bg-gray-50">
+                <button onclick="window.print()" class="w-full py-2 bg-gray-800 text-white rounded text-sm font-medium">
+                    <i class="fas fa-print mr-2"></i> Cetak Dokumen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
+            <!-- Left Sidebar Navigation (Desktop) -->
+            <div class="hidden lg:block lg:col-span-1">
+                <div class="sticky top-24 bg-white rounded-xl shadow-sm border border-gray-200 p-4 max-h-[calc(100vh-7rem)] overflow-y-auto sidebar-scroll text-sm">
+                    <h3 class="font-bold text-gray-900 border-b border-gray-200 pb-2 mb-3 flex items-center">
+                        <i class="fas fa-list-ul text-brand-red mr-2"></i> Navigasi Dokumen
+                    </h3>
+
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Informasi</p>
+                            <ul class="space-y-1 font-medium text-gray-600">
+                                <li><a href="#sk-section" class="hover:text-brand-red block py-1">Surat Keputusan</a></li>
+                                <li><a href="#pengurus-section" class="hover:text-brand-red block py-1">Presidium & Pendiri</a></li>
+                                <li><a href="#pembukaan-section" class="hover:text-brand-red block py-1">Pembukaan</a></li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Anggaran Dasar (AD)</p>
+                            <ul class="space-y-1 text-gray-600 text-xs">
+                                <li><a href="#ad-bab1" class="hover:text-brand-red block py-0.5">BAB I Nama & Kedudukan</a></li>
+                                <li><a href="#ad-bab2" class="hover:text-brand-red block py-0.5">BAB II Asas, Maksud & Tujuan</a></li>
+                                <li><a href="#ad-bab3" class="hover:text-brand-red block py-0.5">BAB III Status & Sifat</a></li>
+                                <li><a href="#ad-bab4" class="hover:text-brand-red block py-0.5">BAB IV Pokok Perjuangan</a></li>
+                                <li><a href="#ad-bab5" class="hover:text-brand-red block py-0.5">BAB V Lambang & Atribut</a></li>
+                                <li><a href="#ad-bab6" class="hover:text-brand-red block py-0.5">BAB VI Keanggotaan</a></li>
+                                <li><a href="#ad-bab7" class="hover:text-brand-red block py-0.5">BAB VII Kedaulatan</a></li>
+                                <li><a href="#ad-bab8" class="hover:text-brand-red block py-0.5">BAB VIII Musyawarah & Rapat</a></li>
+                                <li><a href="#ad-bab9" class="hover:text-brand-red block py-0.5">BAB IX Quorum & Keputusan</a></li>
+                                <li><a href="#ad-bab10" class="hover:text-brand-red block py-0.5">BAB X Kedudukan & Pengurus</a></li>
+                                <li><a href="#ad-bab11" class="hover:text-brand-red block py-0.5">BAB XI Lembaga & Badan</a></li>
+                                <li><a href="#ad-bab12" class="hover:text-brand-red block py-0.5">BAB XII Keuangan & Aset</a></li>
+                                <li><a href="#ad-bab13" class="hover:text-brand-red block py-0.5">BAB XIII Ketentuan Khusus</a></li>
+                                <li><a href="#ad-bab14" class="hover:text-brand-red block py-0.5">BAB XIV Penutup</a></li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Anggaran Rumah Tangga (ART)</p>
+                            <ul class="space-y-1 text-gray-600 text-xs">
+                                <li><a href="#art-bab1" class="hover:text-brand-red block py-0.5">BAB I Lambang, Ikrar, Semboyan</a></li>
+                                <li><a href="#art-bab2" class="hover:text-brand-red block py-0.5">BAB II Keanggotaan</a></li>
+                                <li><a href="#art-bab3" class="hover:text-brand-red block py-0.5">BAB III Kader</a></li>
+                                <li><a href="#art-bab4" class="hover:text-brand-red block py-0.5">BAB IV Hak & Kewajiban</a></li>
+                                <li><a href="#art-bab5" class="hover:text-brand-red block py-0.5">BAB V Pengelolaan Keuangan</a></li>
+                                <li><a href="#art-bab6" class="hover:text-brand-red block py-0.5">BAB VI Etika, Sanksi & Berhenti</a></li>
+                                <li><a href="#art-bab7" class="hover:text-brand-red block py-0.5">BAB VII Penyelesaian Sengketa</a></li>
+                                <li><a href="#art-bab8" class="hover:text-brand-red block py-0.5">BAB VIII Musyawarah & Kongres</a></li>
+                                <li><a href="#art-bab10" class="hover:text-brand-red block py-0.5">BAB X Pemilihan & Kriteria</a></li>
+                                <li><a href="#art-bab11" class="hover:text-brand-red block py-0.5">BAB XI Susunan Kepemimpinan</a></li>
+                                <li><a href="#art-bab13" class="hover:text-brand-red block py-0.5">BAB XIII Wewenang & Tugas Pokok</a></li>
+                                <li><a href="#art-bab16" class="hover:text-brand-red block py-0.5">BAB XVI UMKM & LBH</a></li>
+                                <li><a href="#art-bab18" class="hover:text-brand-red block py-0.5">BAB XVIII Peraturan Peralihan</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="lg:col-span-3 space-y-8 print-container">
+                
+                <!-- Hero Header Card -->
+                <div class="bg-gradient-to-br from-brand-red via-red-900 to-black rounded-2xl shadow-xl text-white p-6 sm:p-10 border-b-4 border-brand-gold text-center relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    <div class="relative z-10">
+                        <div class="w-24 h-24 mx-auto mb-4 bg-white p-2 rounded-full shadow-lg flex items-center justify-center border-2 border-brand-gold">
+                            <i class="fas fa-eagle text-5xl text-brand-red"></i>
+                        </div>
+                        <span class="inline-block px-3 py-1 bg-brand-gold text-gray-900 font-extrabold text-xs tracking-wider rounded-full uppercase mb-3">
+                            Hasil Rakernas Dewan Pendiri & DPP
+                        </span>
+                        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2 font-serif">GERAKAN BERANI NUSANTARA</h1>
+                        <p class="text-brand-gold font-bold text-lg sm:text-xl tracking-widest uppercase mb-4">GBRAN</p>
+                        <div class="h-0.5 w-24 bg-brand-gold mx-auto mb-4"></div>
+                        <p class="text-sm sm:text-base text-gray-200 font-light max-w-xl mx-auto">
+                            DOKUMEN RESMI ANGGARAN DASAR & ANGGARAN RUMAH TANGGA (AD/ART)
+                        </p>
+                        <p class="text-xs text-gray-300 mt-2">Ditetapkan di Jakarta: 16 Desember 2025</p>
+                    </div>
+                </div>
+
+                <!-- Surat Keputusan -->
+                <section id="sk-section" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+                    <div class="border-b border-gray-200 pb-4 mb-6 text-center">
+                        <span class="text-xs font-bold text-brand-red uppercase tracking-wider">Dokumen Pengesahan</span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mt-1">SURAT KEPUTUSAN DEWAN PIMPINAN PUSAT</h2>
+                        <p class="text-sm font-semibold text-gray-600 mt-1">NO: 01/SK-AD/ART-PEND-DPP I/12/2025</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Tentang Pengesahan Anggaran Dasar & Anggaran Rumah Tangga</p>
+                    </div>
+
+                    <div class="space-y-4 text-sm text-gray-700 leading-relaxed">
+                        <div>
+                            <h4 class="font-bold text-gray-900 uppercase text-xs tracking-wider mb-2">Menimbang:</h4>
+                            <ol class="list-decimal list-inside space-y-1.5 pl-2">
+                                <li>Bahwa, rapat kerja nasional yang dilakukan awalnya oleh Dewan Pendiri/Pengawas dan Dewan Pimpinan Pusat.</li>
+                                <li>Bahwa, organisasi Gerakan Berani Nusantara harus dikembangkan dengan bertumpu kepada sistem yang dibangun bersama anggota secara demokratis.</li>
+                                <li>Bahwa, untuk pengembangan organisasi sebagaimana dimaksud di atas dibutuhkan dokumentasi yang lengkap dan tertib sehingga dapat digunakan sebagai rujukan yang pasti guna pengambilan keputusan dalam kerja organisasi.</li>
+                            </ol>
+                        </div>
+
+                        <div class="pt-2">
+                            <h4 class="font-bold text-gray-900 uppercase text-xs tracking-wider mb-2">Memutuskan & Mengesahkan:</h4>
+                            <p class="bg-gray-50 p-4 rounded-lg border-l-4 border-brand-red italic font-medium">
+                                Anggaran Dasar & Anggaran Rumah Tangga Hasil Rapat Dewan Pendiri / Dewan Pengawas dan Dewan Pimpinan Pusat.
+                            </p>
+                        </div>
+
+                        <div class="pt-2">
+                            <h4 class="font-bold text-gray-900 uppercase text-xs tracking-wider mb-1">Lampiran:</h4>
+                            <p class="text-xs text-gray-600">Dokumen Anggaran Dasar & Anggaran Rumah Tangga yang telah disusun oleh DEWAN PENDIRI merupakan bagian yang tidak terpisah dari keputusan-keputusan hasil Rapat Kerja DPP-Pengawas/Dewan Pendiri.</p>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-gray-100 flex flex-col sm:flex-row justify-between text-xs text-gray-500">
+                            <div><strong>Ditetapkan di:</strong> Jakarta</div>
+                            <div><strong>Waktu:</strong> 10.00 WIB</div>
+                            <div><strong>Tanggal:</strong> 16 Desember 2025</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Struktur Dewan Pendiri & Presidium -->
+                <section id="pengurus-section" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+                    <h2 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-3 mb-6 flex items-center">
+                        <i class="fas fa-users text-brand-red mr-2"></i> Dewan Pendiri & Pimpinan Pusat
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gradient-to-br from-amber-50 to-orange-50 p-5 rounded-xl border border-amber-200">
+                            <div class="flex items-center space-x-2 text-amber-900 font-bold mb-3">
+                                <i class="fas fa-crown text-brand-gold"></i>
+                                <span>Dewan Penasehat Organisasi</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg shadow-sm border border-amber-100">
+                                <p class="font-bold text-gray-900">Bpk. Ir. Joko Widodo</p>
+                                <p class="text-xs text-gray-500">Presiden ke-7 Republik Indonesia</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 p-5 rounded-xl border border-gray-200">
+                            <h3 class="font-bold text-gray-900 mb-3 text-sm uppercase tracking-wider">Presidium Utama</h3>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex justify-between p-2 bg-white rounded border border-gray-100">
+                                    <span class="text-gray-600">Pembina & Pendiri:</span>
+                                    <span class="font-bold text-gray-900">Subiakto</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-white rounded border border-gray-100">
+                                    <span class="text-gray-600">Ketua Umum:</span>
+                                    <span class="font-bold text-gray-900">Rimso Maruli Sinaga</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-white rounded border border-gray-100">
+                                    <span class="text-gray-600">Sekretaris Jenderal (Pendiri):</span>
+                                    <span class="font-bold text-gray-900">Jati Erna Sahara</span>
+                                </div>
+                                <div class="flex justify-between p-2 bg-white rounded border border-gray-100">
+                                    <span class="text-gray-600">Bendahara Umum (Pendiri):</span>
+                                    <span class="font-bold text-gray-900">Joice M</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Anggota Presidium & Pengawas Lainnya</h4>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                            <div class="p-2 bg-gray-50 rounded"><strong>Wakil Ketua 1:</strong> Marbi (Pendiri)</div>
+                            <div class="p-2 bg-gray-50 rounded"><strong>Pengawas & Pendiri:</strong> Simon Budiharjo</div>
+                            <div class="p-2 bg-gray-50 rounded"><strong>Pengawas (Anggota):</strong> Eddi D</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ANGGARAN DASAR (AD) SECTION -->
+                <div id="ad-section" class="pt-4">
+                    <div class="bg-brand-red text-white py-3 px-6 rounded-t-xl font-bold flex items-center justify-between">
+                        <span class="text-lg">ANGGARAN DASAR (AD)</span>
+                        <span class="text-xs bg-black bg-opacity-20 px-3 py-1 rounded-full">GBRAN</span>
+                    </div>
+
+                    <div class="bg-white rounded-b-xl shadow-sm border border-t-0 border-gray-200 p-6 sm:p-8 space-y-8">
+                        
+                        <!-- Pembukaan -->
+                        <section id="pembukaan-section" class="border-b border-gray-200 pb-6">
+                            <h3 class="text-base font-bold text-brand-red uppercase tracking-wider mb-3">PEMBUKAAN</h3>
+                            <div class="font-serif text-sm text-gray-700 leading-relaxed space-y-3 italic">
+                                <p>Sesuai dengan amanat sila ke empat Pancasila bahwa kedaulatan rakyat harus ditegakkan di bumi pertiwi Indonesia, karena itu negara dan perwakilan yaitu pemerintahan harus serious bekerja bagi rakyat, bukan untuk kelompok-kelompok tertentu saja. Sistem pemerintahan yang akuntabel, transparansi, bersih dari praktik korupsi dan tindakan intimidasi, bebas dari propaganda negatif, provokasi harus diwujudkan.</p>
+                                <p>Indonesia harus menjadi bangsa yang benar-benar merdeka, adil dan makmur. Kita harus berani menggerakkan dan mengarahkan masa depan bangsa kita sendiri dengan restu dan rahmat Tuhan Yang Maha Esa. Bangsa yang maju, bermartabat dan berkeadilan harus diwujudkan dengan menjadi bangsa yang berdaulat, berdikari dalam bidang ekonomi, dan berkepribadian dalam budaya.</p>
+                                <p>Gerakan Berani Nusantara (GBRAN) dibentuk atas dasar cinta masyarakat Indonesia kepada ibu pertiwi, negara Indonesia yang kita cintai dan banggakan. GBRAN dibentuk agar dapat berperan sebagai mitra pemerintah dalam menetapkan arah, tujuan, dan sasaran pembangunan nasional. GBRAN akan terus mengawal dan berpartisipasi mendukung pemerintahan Prabowo-Gibran dalam menuju Indonesia Emas 2045.</p>
+                                <p>Kami eksponen Relawan yang cinta tanah air berlandaskan Pancasila dan UUD 1945, telah bersepakat untuk membentuk barisan dalam satu Organisasi Kemasyarakatan (ORMAS-PERKUMPULAN) yang dinamakan Gerakan Berani Nusantara (GBRAN), yang didirikan pada tanggal 17 Oktober 2025, di Jakarta yang dideklarasikan pada tanggal 17 Desember 2025, bertempat di Ballroom Lojie SOLO.</p>
+                            </div>
+                        </section>
+
+                        <!-- AD BAB I -->
+                        <section id="ad-bab1" class="space-y-3">
+                            <h3 class="font-bold text-gray-900 border-l-4 border-brand-red pl-3 text-base">BAB I: NAMA, WAKTU, BADAN HUKUM DAN KEDUDUKAN</h3>
+                            <div class="text-sm text-gray-700 space-y-2 pl-4">
+                                <p><strong>Pasal 1</strong></p>
+                                <ol class="list-decimal list-inside space-y-1 pl-2">
+                                    <li>Nama Organisasi adalah Gerakan Berani Nusantara, disingkat <strong>GBRAN</strong>.</li>
+                                    <li>GBRAN didirikan pada Tanggal 17 Oktober 2025 untuk jangka waktu yang tidak ditentukan.</li>
+                                    <li>Organisasi GBRAN adalah organisasi masyarakat berbentuk badan hukum perkumpulan.</li>
+                                    <li>Kedudukan Dewan Pimpinan Pusat GBRAN berada di Jakarta, dan wilayah Gerakan Berani Nusantara (GBRAN) meliputi seluruh wilayah Negara Kesatuan Republik Indonesia.</li>
+                                    <li>GBRAN membentuk struktur kepengurusan sesuai dengan tingkatan di seluruh wilayah Republik Indonesia berdasarkan keputusan Dewan Pengurus Pusat.</li>
+                                </ol>
+                            </div>
+                        </section>
+
+                        <!-- AD BAB II -->
+                        <section id="ad-bab2" class="space-y-3 pt-4 border-t border-gray-100">
+                            <h3 class="font-bold text-gray-900 border-l-4 border-brand-red pl-3 text-base">BAB II: ASAS, MAKSUD, TUJUAN DAN FUNGSI</h3>
+                            <div class="text-sm text-gray-700 space-y-3 pl-4">
+                                <p><strong>Pasal 2</strong></p>
+                                <p>1. <strong>Asas:</strong> Gerakan Berani Nusantara (GBRAN) berasas dan berideologi Pancasila dan UUD 1945.</p>
+                                <p>2. <strong>Maksud & Tujuan:</strong></p>
+                                <ul class="list-disc list-inside space-y-1 pl-4 text-xs sm:text-sm">
+                                    <li>Membentuk dan menghimpun gerakan bersama dalam menghidupkan masyarakat Nusantara yang memiliki nilai luhur gotong royong.</li>
+                                    <li>Menanamkan dan mengamalkan nilai-nilai Pancasila sebagai falsafah negara.</li>
+                                    <li>Menjaga nilai agama, toleransi, dan mencegah perpecahan antar golongan/suku/ras/agama.</li>
+                                    <li>Meningkatkan partisipasi dan pemberdayaan masyarakat serta pelayanan publik hingga akar rumput.</li>
+                                    <li>Menciptakan lapangan kerja melalui pengembangan UMKM berbasis anggota.</li>
+                                </ul>
+                                <p>3. <strong>Fungsi:</strong> Penyalur kegiatan anggota, pembinaan kader, penyalur aspirasi rakyat, pelayanan sosial/hukum/kesehatan/ekonomi, serta perekat persatuan bangsa.</p>
+                            </div>
+                        </section>
+
+                        <!-- AD BAB III & IV -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+                            <section id="ad-bab3" class="space-y-2">
+                                <h3 class="font-bold text-gray-900 border-l-4 border-brand-red pl-3 text-sm">BAB III: STATUS DAN SIFAT</h3>
+                                <div class="text-xs sm:text-sm text-gray-700 space-y-1 pl-4">
+                                    <p><strong>Pasal 3</strong></p>
+                                    <p>1. Status GBRAN adalah Independen.</p>
+                                    <p>2. Bersifat sukarela, terbuka, sosial, tanpa membeda-bedakan ras, suku, agama, serta latar belakang sosial politik.</p>
+                                    <p>3. Memiliki sifat akuntabel, bersih, mandiri, militan, gotong royong, patriotik, inovatif, nirlaba, dan demokratis.</p>
+                                </div>
+                            </section>
+
+                            <section id="ad-bab4" class="space-y-2">
+                                <h3 class="font-bold text-gray-900 border-l-4 border-brand-red pl-3 text-sm">BAB IV: POKOK-POKOK PERJUANGAN</h3>
+                                <div class="text-xs sm:text-sm text-gray-700 space-y-1 pl-4">
+                                    <p><strong>Pasal 4</strong></p>
+                                    <p>GBRAN memiliki pokok perjuangan sesuai dengan program Asta Cita pemerintahan Prabowo-Gibran menyongsong Indonesia Maju: Berdaulat secara politik, Mandiri secara ekonomi, Maju secara teknologi, dan Berkepribadian secara sosial budaya.</p>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- AD BAB VIII & IX -->
+                        <section id="ad-bab8" class="space-y-3 pt-4 border-t border-gray-100">
+                            <h3 class="font-bold text-gray-900 border-l-4 border-brand-red pl-3 text-base">BAB VIII & IX: MUSYAWARAH, RAPAT & KUORUM</h3>
+                            <div class="text-sm text-gray-700 space-y-3 pl-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
+                                    <div>
+                                        <p class="font-bold text-gray-900 text-xs uppercase mb-2">Tingkat Nasional:</p>
+                                        <ul class="list-disc list-inside text-xs space-y-1 text-gray-600">
+                                            <li>Kongres</li>
+                                            <li>Kongres Luar Biasa</li>
+                                            <li>Rapat Kerja Nasional (Rakernas)</li>
+                                            <li>Rapat Pimpinan Nasional (Rapimnas)</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-gray-900 text-xs uppercase mb-2">Tingkat Daerah & Cabang:</p>
+                                        <ul class="list-disc list-inside text-xs space-y-1 text-gray-600">
+                                            <li>Konferensi Daerah / Cabang</li>
+                                            <li>Rapat Kerja Daerah / Cabang</li>
+                                            <li>Rapat Anak Cabang & Ranting</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-gray-600"><strong>Kuorum (Pasal 14):</strong> Sah apabila dihadiri $1/2 + 1$ dari unsur utusan. Keputusan diambil secara musyawarah mufakat, atau voting terbanyak ($2/3$ persetujuan utusan hadir).</p>
+                            </div>
+                        </section>
+
+                        <!-- AD BAB XII -->
+                        <section id="ad-bab12" class="space-y-3 pt-4 border-t border-gray-100">
+                            <h3 class="font-bold text-gray-900 border-l-4 border-brand-red pl-3 text-base">BAB XII: KEUANGAN DAN KEKAYAAN ORGANISASI</h3>
+                            <div class="text-sm text-gray-700 space-y-2 pl-4">
+                                <p><strong>Pasal 19 (Sumber Keuangan):</strong></p>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                                    <div class="p-2 bg-red-50 rounded border border-red-100">Iuran wajib anggota</div>
+                                    <div class="p-2 bg-red-50 rounded border border-red-100">Sumbangan & Donasi tidak mengikat</div>
+                                    <div class="p-2 bg-red-50 rounded border border-red-100">Usaha sah & UMKM</div>
+                                    <div class="p-2 bg-red-50 rounded border border-red-100">Iuran sukarela pengurus</div>
+                                    <div class="p-2 bg-red-50 rounded border border-red-100">Sponsor resmi</div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">Pengelolaan keuangan dilakukan secara terpusat melalui Bank Nasional dengan sistem transparan, akuntabel, serta dapat diaudit internal/eksternal.</p>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+
+                <!-- ANGGARAN RUMAH TANGGA (ART) SECTION -->
+                <div id="art-section" class="pt-4">
+                    <div class="bg-gray-900 text-white py-3 px-6 rounded-t-xl font-bold flex items-center justify-between border-b-2 border-brand-gold">
+                        <span class="text-lg">ANGGARAN RUMAH TANGGA (ART)</span>
+                        <span class="text-xs bg-brand-gold text-gray-900 px-3 py-1 rounded-full font-bold">GBRAN</span>
+                    </div>
+
+                    <div class="bg-white rounded-b-xl shadow-sm border border-t-0 border-gray-200 p-6 sm:p-8 space-y-8">
+                        
+                        <!-- ART BAB I -->
+                        <section id="art-bab1" class="space-y-3">
+                            <h3 class="font-bold text-gray-900 border-l-4 border-brand-gold pl-3 text-base">BAB I: LAMBANG, IKRAR, SEMBOYAN & SALAM</h3>
+                            <div class="text-sm text-gray-700 space-y-3 pl-4">
+                                <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 text-xs space-y-2">
+                                    <p><strong>Makna Logo (Pasal 1):</strong> Siluet Burung Garuda Putih dengan peta Indonesia di atas lingkaran merah maroon & hitam. Melambangkan keberanian, ketulusan, serta komitmen moral. Obor Emas melambangkan penerangan bagi masyarakat Indonesia.</p>
+                                    <p><strong>Ikrar GBRAN (Pasal 2):</strong> Setia kepada NKRI, Pancasila, UUD 1945, Berbakti kepada Nusa dan Bangsa, serta mendukung program pemerintahan Prabowo-Gibran mewujudkan Asta Cita.</p>
+                                    <p><strong>Semboyan (Pasal 3):</strong> Persatuan, Perjuangan dan Pergerakan, untuk rakyat Indonesia.</p>
+                                    <p><strong>Salam Perjuangan (Pasal 4):</strong> <em>"Satu perjuangan, satu keberanian untuk Indonesia Maju!"</em></p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ART BAB II & III -->
+                        <section id="art-bab2" class="space-y-3 pt-4 border-t border-gray-100">
+                            <h3 class="font-bold text-gray-900 border-l-4 border-brand-gold pl-3 text-base">BAB II & III: KEANGGOTAAN & KADER</h3>
+                            <div class="text-sm text-gray-700 space-y-2 pl-4">
+                                <p class="text-xs text-gray-600"><strong>Syarat Anggota Biasa (Pasal 6):</strong> WNI berusia minimal 18 tahun, menyetujui AD/ART, mengisi formulir pendaftaran digital/KTP, dan memiliki KTA resmi terbitan DPP.</p>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs mt-2">
+                                    <div class="p-3 bg-gray-50 rounded border">
+                                        <p class="font-bold text-gray-900 mb-1">Anggota Luar Biasa (Pasal 7)</p>
+                                        <p class="text-gray-600">Anggota yang terbukti setia minimal 5 tahun dan berjasa besar bagi pengembangan GBRAN.</p>
+                                    </div>
+                                    <div class="p-3 bg-gray-50 rounded border">
+                                        <p class="font-bold text-gray-900 mb-1">Anggota Kehormatan (Pasal 8)</p>
+                                        <p class="text-gray-600">Tokoh masyarakat/pendiri yang memberikan kontribusi besar bagi perjuangan organisasi.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ART BAB IV -->
+                        <section id="art-bab4" class="space-y-3 pt-4 border-t border-gray-100">
+                            <h3 class="font-bold text-gray-900 border-l-4 border-brand-gold pl-3 text-base">BAB IV: HAK DAN KEWAJIBAN ANGGOTA</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm pl-4">
+                                <div class="bg-emerald-50 p-4 rounded-lg border border-emerald-100">
+                                    <h4 class="font-bold text-emerald-900 mb-2">Hak Anggota (Pasal 10):</h4>
+                                    <ul class="list-disc list-inside space-y-1 text-emerald-800 text-xs">
+                                        <li>Perlakuan yang sama dari organisasi.</li>
+                                        <li>Perlindungan, pembelaan, dan pelatihan kader.</li>
+                                        <li>Mengeluarkan pendapat, saran, dan usul positif.</li>
+                                        <li>Hak memilih dan dipilih (sesuai ketentuan).</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-rose-50 p-4 rounded-lg border border-rose-100">
+                                    <h4 class="font-bold text-rose-900 mb-2">Kewajiban Anggota (Pasal 10):</h4>
+                                    <ul class="list-disc list-inside space-y-1 text-rose-800 text-xs">
+                                        <li>Mentaati AD/ART dan ketetapan Kongres.</li>
+                                        <li>Menjaga kehormatan & kerahasiaan organisasi.</li>
+                                        <li>Membayar iuran wajib anggota.</li>
+                                        <li>Dilarang melakukan tindakan SARA & Separatis.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ART BAB X -->
+                        <section id="art-bab10" class="space-y-3 pt-4 border-t border-gray-100">
+                            <h3 class="font-bold text-gray-900 border-l-4 border-brand-gold pl-3 text-base">BAB X: KRITERIA PENGURUS ORGANISASI</h3>
+                            <div class="text-xs sm:text-sm text-gray-700 pl-4">
+                                <p class="font-bold mb-2">Syarat Utama Fungsionaris (Pasal 34):</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                                    <div class="p-2 border rounded bg-gray-50">Integritas & komitmen tinggi</div>
+                                    <div class="p-2 border rounded bg-gray-50">Bukan ASN (Aparatur Sipil Negara)</div>
+                                    <div class="p-2 border rounded bg-gray-50">Bukan pengurus Partai Politik</div>
+                                    <div class="p-2 border rounded bg-gray-50">Bukan pengurus Ormas lain</div>
+                                    <div class="p-2 border rounded bg-gray-50">Bebas masalah hukum min. 3 tahun</div>
+                                    <div class="p-2 border rounded bg-gray-50">Jiwa kesukarelawanan</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ART BAB XI -->
+                        <section id="art-bab11" class="space-y-3 pt-4 border-t border-gray-100">
+                            <h3 class="font-bold text-gray-900 border-l-4 border-brand-gold pl-3 text-base">BAB XI: SUSUNAN STRUKTUR KEPEMIMPINAN</h3>
+                            <div class="text-xs text-gray-700 pl-4 space-y-3">
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200 border text-left">
+                                        <thead class="bg-gray-100 font-bold">
+                                            <tr>
+                                                <th class="px-3 py-2">Tingkatan</th>
+                                                <th class="px-3 py-2">Sebutan Pemimpin</th>
+                                                <th class="px-3 py-2">Masa Bakti</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-100">
+                                            <tr>
+                                                <td class="px-3 py-2 font-semibold">Pusat (DPP)</td>
+                                                <td class="px-3 py-2">Ketua Umum, Sekjend, Bendahara Umum</td>
+                                                <td class="px-3 py-2">5 Tahun (Max 2 Periode)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-3 py-2 font-semibold">Provinsi (DPD)</td>
+                                                <td class="px-3 py-2">Ketua, Sekretaris, Bendahara</td>
+                                                <td class="px-3 py-2">5 Tahun</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-3 py-2 font-semibold">Kabupaten/Kota (DPC)</td>
+                                                <td class="px-3 py-2">Ketua, Sekretaris, Bendahara</td>
+                                                <td class="px-3 py-2">5 Tahun</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-3 py-2 font-semibold">Kecamatan (PAC)</td>
+                                                <td class="px-3 py-2">Ketua PAC</td>
+                                                <td class="px-3 py-2">3 Tahun</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-3 py-2 font-semibold">Kelurahan/Desa (Ranting)</td>
+                                                <td class="px-3 py-2">Ketua Ranting</td>
+                                                <td class="px-3 py-2">2 Tahun</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- ART BAB XVI -->
+                        <section id="art-bab16" class="space-y-3 pt-4 border-t border-gray-100">
+                            <h3 class="font-bold text-gray-900 border-l-4 border-brand-gold pl-3 text-base">BAB XVI: UMKM & LEMBAGA BANTUAN HUKUM (LBH)</h3>
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 text-xs sm:text-sm text-blue-900 space-y-2 pl-4">
+                                <p><strong>Pasal 54:</strong></p>
+                                <p>1. GBRAN secara aktif mendorong kemandirian ekonomi masyarakat melalui pembentukan, bimbingan, serta advokasi UMKM dan Ketahanan Pangan.</p>
+                                <p>2. Pembentukan unit usaha berbadan hukum serta Lembaga Bantuan Hukum (LBH GBRAN) dapat dilaksanakan sesuai perundang-undangan untuk memberikan pelayanan hukum bagi masyarakat akar rumput.</p>
+                            </div>
+                        </section>
+
+                        <!-- Penutup & Tanda Tangan -->
+                        <section class="pt-8 border-t border-gray-200 text-center space-y-4">
+                            <p class="text-xs text-gray-500 italic">Disahkan dan Ditetapkan di Jakarta, 16 Desember 2025</p>
+                            
+                            <div class="pt-4">
+                                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">DEWAN PENDIRI GBRAN</p>
+                                <div class="flex flex-wrap justify-center gap-4 text-xs font-bold text-gray-800">
+                                    <span class="px-3 py-1 bg-gray-100 rounded-full">Subiakto</span>
+                                    <span class="px-3 py-1 bg-gray-100 rounded-full">Simon Budijanto</span>
+                                    <span class="px-3 py-1 bg-gray-100 rounded-full">Marbi</span>
+                                    <span class="px-3 py-1 bg-gray-100 rounded-full">Jati Erna Sahara</span>
+                                    <span class="px-3 py-1 bg-gray-100 rounded-full">Joice M</span>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 mt-12 border-t border-gray-800 no-print">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-2">
+            <p class="font-semibold text-gray-300">GERAKAN BERANI NUSANTARA (GBRAN)</p>
+            <p>© 2025 - All Rights Reserved. Dokumen Resmi Organisasi Kemasyarakatan.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Mobile Drawer Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const drawerLinks = document.querySelectorAll('.drawer-link');
+
+        function toggleDrawer() {
+            mobileDrawer.classList.toggle('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleDrawer);
+        closeDrawerBtn.addEventListener('click', toggleDrawer);
+
+        drawerLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileDrawer.classList.add('hidden');
+            });
+        });
+
+        // Search Filter Logic
+        function setupSearch(inputId) {
+            const searchInput = document.getElementById(inputId);
+            if (!searchInput) return;
+
+            searchInput.addEventListener('keyup', function(e) {
+                const term = e.target.value.toLowerCase();
+                const sections = document.querySelectorAll('section');
+
+                sections.forEach(section => {
+                    const text = section.textContent.toLowerCase();
+                    if (text.includes(term)) {
+                        section.style.display = '';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        setupSearch('searchInput');
+        setupSearch('mobileSearchInput');
+    </script>
+</body>
+</html>
