@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikator Editor Berita & SEO - Blogspot (Blogger API v3)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome untuk ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-md py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <i class="fa-solid fa-newspaper text-2xl"></i>
+            <h1 class="text-xl font-bold tracking-wide">NewsApplicator <span class="text-xs bg-indigo-500 py-1 px-2 rounded-full uppercase">Full SEO Edition</span></h1>
+        </div>
+        <div class="text-sm bg-indigo-800 px-3 py-1.5 rounded-lg border border-indigo-600 flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="connection-status">Siap Digunakan</span>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="flex-grow container mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Kolom Kiri & Tengah: Editor, Meta & SEO (2 Kolom) -->
+        <section class="lg:col-span-2 flex flex-col space-y-6">
+            
+            <!-- Card Meta Berita Utama -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-4">
+                <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">
+                    <i class="fa-solid fa-pen-nib mr-2 text-indigo-600"></i>Meta Berita
+                </h2>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Judul Berita</label>
+                    <input type="text" id="post-title" placeholder="Masukkan judul berita utama..." class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-lg font-medium">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Label / Kategori (Pisahkan koma)</label>
+                        <input type="text" id="post-labels" placeholder="Politik, Nasional, Hukum" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-600 mb-1">Status Publikasi</label>
+                        <select id="post-status" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm bg-white">
+                            <option value="false">Terbitkan Langsung (Publish)</option>
+                            <option value="true" selected>Simpan sebagai Draf (Draft)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Pengaturan SEO & Meta Penelusuran -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-4">
+                <h2 class="text-lg font-semibold text-slate-700 border-b pb-2">
+                    <i class="fa-solid fa-ranking-star mr-2 text-indigo-600"></i>Pengaturan SEO & Meta
+                </h2>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Custom Slug / Permalink URL (Opsional)</label>
+                    <input type="text" id="post-slug" placeholder="contoh-url-berita-seo-ramah" class="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <p class="text-xs text-slate-400 mt-1">Digunakan untuk custom path URL atau dikosongkan agar mengikuti judul otomatis.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Deskripsi Penelusuran (Meta Description)</label>
+                    <textarea id="post-description" rows="2" placeholder="Tulis ringkasan 1-2 kalimat (maks. 150-160 karakter) yang mengandung kata kunci utama untuk cuplikan Google..." class="w-full px-4 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                    <p class="text-xs text-slate-400 mt-1">Secara otomatis dipetakan ke penelusuran mesin pencari via Blogger API v3 (customMetaData).</p>
+                </div>
+            </div>
+
+            <!-- Card WYSIWYG Editor -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col flex-grow">
+                <div class="flex justify-between items-center border-b pb-2 mb-3">
+                    <h2 class="text-lg font-semibold text-slate-700"><i class="fa-solid fa-file-lines mr-2 text-indigo-600"></i>Isi Konten Berita</h2>
+                    <span class="text-xs text-slate-400" id="word-count">0 Kata | 0 Karakter</span>
+                </div>
+
+                <!-- Toolbar Editor -->
+                <div class="flex flex-wrap gap-1 bg-slate-50 p-2 border border-slate-200 rounded-t-lg">
+                    <button type="button" onclick="formatText('bold')" class="p-2 hover:bg-slate-200 rounded text-slate-700" title="Tebal"><i class="fa-solid fa-bold"></i></button>
+                    <button type="button" onclick="formatText('italic')" class="p-2 hover:bg-slate-200 rounded text-slate-700" title="Miring"><i class="fa-solid fa-italic"></i></button>
+                    <button type="button" onclick="formatText('underline')" class="p-2 hover:bg-slate-200 rounded text-slate-700" title="Garis Bawah"><i class="fa-solid fa-underline"></i></button>
+                    <span class="w-px bg-slate-300 mx-1"></span>
+                    <button type="button" onclick="formatText('formatBlock', 'H2')" class="p-2 hover:bg-slate-200 rounded text-slate-700 font-bold text-sm" title="Heading 2 (Penting untuk SEO)">H2</button>
+                    <button type="button" onclick="formatText('formatBlock', 'H3')" class="p-2 hover:bg-slate-200 rounded text-slate-700 font-bold text-sm" title="Heading 3">H3</button>
+                    <button type="button" onclick="formatText('formatBlock', 'P')" class="p-2 hover:bg-slate-200 rounded text-slate-700 font-bold text-sm">P</button>
+                    <span class="w-px bg-slate-300 mx-1"></span>
+                    <button type="button" onclick="formatText('insertUnorderedList')" class="p-2 hover:bg-slate-200 rounded text-slate-700" title="List Poin"><i class="fa-solid fa-list-ul"></i></button>
+                    <button type="button" onclick="insertLink()" class="p-2 hover:bg-slate-200 rounded text-slate-700" title="Sisipkan Tautan"><i class="fa-solid fa-link"></i></button>
+                    <button type="button" onclick="insertImagePrompt()" class="p-2 hover:bg-slate-200 rounded text-slate-700" title="Sisipkan Gambar (URL + Alt Text)"><i class="fa-solid fa-image"></i></button>
+                </div>
+
+                <!-- Area Ketik Konten (Editable Div) -->
+                <div id="editor-content" contenteditable="true" class="w-full flex-grow p-4 border border-t-0 border-slate-200 rounded-b-lg focus:outline-none min-h-[300px] max-h-[500px] overflow-y-auto bg-white prose max-w-none">
+                    <p>Tulis atau tempel materi berita pihak ketiga Anda di sini...</p>
+                </div>
+
+                <!-- Tombol Eksekusi Aplikator -->
+                <div class="mt-4 flex justify-end">
+                    <button id="btn-submit" onclick="executeApplicator()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-lg shadow transition flex items-center space-x-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Kirim ke Blogspot (SEO Optimized)</span>
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Kolom Kanan: Pengaturan API & Log Konsol -->
+        <section class="flex flex-col space-y-6">
+            
+            <!-- Card Konfigurasi API -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 space-y-4">
+                <h2 class="text-lg font-semibold text-slate-700 border-b pb-2"><i class="fa-solid fa-key mr-2 text-indigo-600"></i>Blogger API v3 Config</h2>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Blog ID</label>
+                    <!-- Blog ID otomatis terisi nilai yang Anda berikan -->
+                    <input type="text" id="api-blogid" value="556281508006067335" class="w-full px-3 py-2 border rounded-lg text-sm bg-slate-50 font-mono text-slate-700 focus:outline-none" readonly>
+                    <p class="text-xs text-slate-400 mt-1">Blog ID permanen blog Anda.</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">OAuth 2.0 Access Token</label>
+                    <input type="password" id="api-token" placeholder="ya29.a0..." class="w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                    <p class="text-xs text-slate-400 mt-1">Token akses aktif dari Google OAuth Playground/Cloud Console.</p>
+                </div>
+
+                <button onclick="saveCredentials()" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium py-2 rounded-lg transition">
+                    Simpan Token Lokal
+                </button>
+            </div>
+
+            <!-- Card Konsol Log Eksekusi -->
+            <div class="bg-slate-900 text-slate-200 rounded-xl shadow-sm border border-slate-800 p-5 flex flex-col flex-grow min-h-[250px]">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2 mb-3">
+                    <h2 class="text-sm font-semibold tracking-wider uppercase text-slate-400"><i class="fa-solid fa-terminal mr-2 text-emerald-400"></i>Log Konsol</h2>
+                    <button onclick="clearLogs()" class="text-xs text-slate-500 hover:text-slate-300">Bersihkan</button>
+                </div>
+                <div id="log-container" class="font-mono text-xs space-y-2 overflow-y-auto max-h-[300px] flex-grow">
+                    <p class="text-slate-500">[Sistem] Blog ID 556281508006067335 berhasil dimuat otomatis.</p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Modal Hasil Sukses -->
+    <div id="success-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-xl animate-fade-in">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-800">Berita Berhasil Dikirim!</h3>
+            <p id="success-message" class="text-sm text-slate-600">Artikel dan parameter SEO telah berhasil diproses oleh server Blogger.</p>
+            <div class="pt-2 flex space-x-3">
+                <a id="success-link" href="#" target="_blank" class="flex-grow bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded-lg text-sm transition text-center">Buka Tautan</a>
+                <button onclick="closeModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-4 py-2 rounded-lg text-sm transition">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Aplikasi Lengkap -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedToken = localStorage.getItem('oauth_token');
+            if (savedToken) document.getElementById('api-token').value = savedToken;
+
+            const editor = document.getElementById('editor-content');
+            editor.addEventListener('input', updateWordCount);
+        });
+
+        function saveCredentials() {
+            const token = document.getElementById('api-token').value.trim();
+            localStorage.setItem('oauth_token', token);
+            appendLog("OAuth Token berhasil disimpan ke penyimpanan lokal browser.", "success");
+        }
+
+        function appendLog(message, type = "info") {
+            const container = document.getElementById('log-container');
+            const p = document.createElement('p');
+            const timestamp = new Date().toLocaleTimeString();
+            let colorClass = "text-slate-300";
+            if (type === "success") colorClass = "text-emerald-400";
+            if (type === "error") colorClass = "text-rose-400";
+            if (type === "warning") colorClass = "text-amber-400";
+
+            p.className = colorClass;
+            p.innerHTML = `[${timestamp}] ${message}`;
+            container.appendChild(p);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('log-container').innerHTML = '';
+        }
+
+        function updateWordCount() {
+            const text = document.getElementById('editor-content').innerText || "";
+            const charCount = text.length;
+            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+            document.getElementById('word-count').innerText = `${words} Kata | ${charCount} Karakter`;
+        }
+
+        function formatText(command, value = null) {
+            document.execCommand(command, false, value);
+            document.getElementById('editor-content').focus();
+        }
+
+        function insertLink() {
+            const url = prompt("Masukkan URL Tautan:");
+            if (url) formatText('createLink', url);
+        }
+
+        function insertImagePrompt() {
+            const url = prompt("Masukkan URL Gambar Publik (CDN / Direct Link):");
+            if (url) {
+                const altText = prompt("Masukkan Alt Text Gambar (Penting untuk SEO Gambar):", "Ilustrasi Berita");
+                const imgHtml = `<img src="${url}" alt="${altText || 'Ilustrasi Berita'}" style="max-width:100%; height:auto; border-radius:8px; margin: 10px 0;" />`;
+                formatText('insertHTML', imgHtml);
+            }
+        }
+
+        // --- Core Applicator & SEO Engine ---
+        async function executeApplicator() {
+            const title = document.getElementById('post-title').value.trim();
+            const contentHtml = document.getElementById('editor-content').innerHTML.trim();
+            const labelsInput = document.getElementById('post-labels').value.trim();
+            const isDraftParam = document.getElementById('post-status').value;
+            
+            // Parameter SEO
+            const customSlug = document.getElementById('post-slug').value.trim();
+            const metaDescription = document.getElementById('post-description').value.trim();
+            
+            // Blog ID Hardcoded
+            const blogId = "556281508006067335";
+            const accessToken = document.getElementById('api-token').value.trim();
+
+            if (!title) {
+                alert("Judul berita wajib diisi!");
+                return;
+            }
+            if (!accessToken) {
+                alert("OAuth Access Token wajib diisi pada panel konfigurasi!");
+                return;
+            }
+
+            const labelsArray = labelsInput ? labelsInput.split(',').map(item => item.trim()).filter(Boolean) : [];
+
+            // Membangun payload lengkap dengan dukungan Blogger API v3
+            const payload = {
+                title: title,
+                content: contentHtml,
+                labels: labelsArray,
+                customMetaData: metaDescription // Menyimpan Meta Description
+            };
+
+            if (customSlug) {
+                payload.url = customSlug;
+            }
+
+            const url = `https://www.googleapis.com/blogger/v3/blogs/${blogId}/posts/?isDraft=${isDraftParam}`;
+
+            appendLog(`Mengirim berita "${title}" beserta data SEO ke Blog ID: ${blogId}...`, "info");
+            document.getElementById('btn-submit').disabled = true;
+            document.getElementById('btn-submit').innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Memproses...</span>`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    appendLog(`SUKSES! Berita berhasil diposting. Status Draft: ${isDraftParam}`, "success");
+                    appendLog(`URL Post: <a href="${data.url}" target="_blank" class="underline">${data.url}</a>`, "success");
+                    
+                    document.getElementById('success-message').innerText = isDraftParam === "true" 
+                        ? "Artikel beserta parameter SEO berhasil disimpan sebagai Draf di dashboard Blogger Anda." 
+                        : "Artikel beserta parameter SEO berhasil diterbitkan secara langsung.";
+                    document.getElementById('success-link').href = data.url;
+                    document.getElementById('success-modal').classList.remove('hidden');
+                } else {
+                    const errMessage = data.error ? data.error.message : 'Kesalahan tidak dikenal';
+                    appendLog(`GAGAL API (${response.status}): ${errMessage}`, "error");
+                    alert(`Gagal mengirim berita: ${errMessage}`);
+                }
+            } catch (networkError) {
+                appendLog(`Kesalahan Jaringan / CORS: ${networkError.message}`, "error");
+                alert(`Gagal terhubung ke jaringan: ${networkError.message}`);
+            } finally {
+                document.getElementById('btn-submit').disabled = false;
+                document.getElementById('btn-submit').innerHTML = `<i class="fa-solid fa-paper-plane"></i><span>Kirim ke Blogspot (SEO Optimized)</span>`;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
